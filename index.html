@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DetAIthoN 2k26 | IEEE RAS Elite</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@300;600;800&display=swap');
+
+        :root {
+            --gold-vibrant: #FFD700;
+            --gold-deep: #B8860B;
+            --glass-card: rgba(10, 10, 10, 0.85);
+            --border-glow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background-color: #000; color: #fff; 
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; }
+
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 60px 15px;
+        }
+
+        .section-card {
+            width: 100%; max-width: 650px; 
+            background: var(--glass-card);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: var(--border-glow);
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: breathe 4s infinite alternate;
+        }
+
+        .section-card:hover {
+            transform: scale(1.02) translateY(-10px);
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.4);
+            border-color: var(--gold-vibrant);
+        }
+
+        @keyframes breathe {
+            from { box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
+            to { box-shadow: 0 0 40px rgba(212, 175, 55, 0.5); }
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            background: linear-gradient(to bottom, #fff, var(--gold-vibrant));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center; letter-spacing: 10px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif; color: var(--gold-vibrant);
+            font-size: 1.2rem; margin-bottom: 30px;
+            text-transform: uppercase; letter-spacing: 2px;
+            border-left: 4px solid var(--gold-vibrant); padding-left: 15px;
+        }
+
+        .qr-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--gold-vibrant);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .qr-placeholder {
+            width: 180px; height: 180px;
+            background: #fff; 
+            margin: 0 auto 15px;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .full { grid-column: span 2; }
+        .input-group { display: flex; flex-direction: column; margin-bottom: 20px; }
+        label { font-size: 0.75rem; font-weight: 800; color: #888; margin-bottom: 8px; text-transform: uppercase; }
+        
+        input { 
+            padding: 15px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255, 215, 0, 0.2); 
+            border-radius: 10px; color: #fff; outline: none; transition: 0.3s;
+        }
+        input:focus { border-color: var(--gold-vibrant); box-shadow: 0 0 15px var(--gold-vibrant); }
+
+        input[type="file"]::file-selector-button {
+            background: var(--gold-vibrant); color: #000; border: none; padding: 10px 20px;
+            border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase;
+        }
+
+        .btn-gold {
+            width: 100%; padding: 22px; 
+            background: linear-gradient(45deg, var(--gold-deep), var(--gold-vibrant));
+            color: #000; border: none; border-radius: 50px; 
+            font-weight: 800; font-family: 'Cinzel', serif;
+            font-size: 1.2rem; cursor: pointer; text-transform: uppercase;
+            letter-spacing: 5px; transition: 0.4s; margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        }
+        .btn-gold:hover { letter-spacing: 8px; filter: brightness(1.2); }
+        .btn-gold:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* --- THEMED SUCCESS MODAL --- */
+        #success-modal {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 1000;
+            justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: var(--glass-card);
+            border: 2px solid var(--gold-vibrant);
+            border-radius: 20px; padding: 40px; text-align: center;
+            max-width: 450px; width: 90%;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+            backdrop-filter: blur(20px);
+        }
+        .modal-content h3 { font-family: 'Cinzel', serif; color: var(--gold-vibrant); font-size: 1.8rem; margin-bottom: 15px; }
+        .modal-content p { color: #fff; margin-bottom: 25px; line-height: 1.6; }
+
+        footer { margin-top: 80px; padding: 80px 20px; background: rgba(0,0,0,0.95); border-top: 2px solid var(--gold-vibrant); text-align: center; }
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; max-width: 900px; margin: 40px auto; }
+        .social-links a { color: var(--gold-vibrant); text-decoration: none; border: 1px solid var(--gold-vibrant); padding: 12px 30px; border-radius: 30px; transition: 0.3s; font-size: 0.8rem; font-weight: 800; }
+        .social-links a:hover { background: var(--gold-vibrant); color: #000; box-shadow: 0 0 20px var(--gold-vibrant); }
+    </style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div id="success-modal">
+    <div class="modal-content">
+        <h3>MISSION SUCCESSFUL</h3>
+        <p>Welcome aboard! Prepare to code, collaborate, and challenge yourself.</p>
+        <button onclick="closeModal()" class="btn-gold" style="padding: 12px 30px; font-size: 1rem;">ACKNOWLEDGE</button>
+    </div>
+</div>
+
+<div class="page-wrapper">
+    <div style="text-align: center; margin-bottom: 70px;">
+        <img src="https://2025.ieee-icra.org/wp-content/uploads/2024/04/RAS-logo-white.png" style="width: 90px; filter: brightness(0) invert(1) drop-shadow(0 0 15px gold);">
+        <h1>DetAIthoN 2k26</h1>
+        <p style="color: var(--gold-vibrant); letter-spacing: 5px; font-weight: 800; margin-top: 15px;">IEEE RAS ELITE DIVISION</p>
+    </div>
+
+    <div class="section-card">
+        <h2>The Mandate</h2>
+        <p style="color: #aaa; line-height: 1.8;">
+            This 24-hour hackathon is a platform for students to innovate, collaborate, and build impactful tech solutions. Participants will work in teams to solve real-world challenges using creativity and technical skills. The event promotes learning, mentorship, and teamwork. Projects will be evaluated based on innovation, feasibility, implementation, and impact. The hackathon aims to foster innovation and encourage technology-driven problem solving.
+        </p>
+    </div>
+
+    <form id="hackathon-form" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+        
+        <div class="section-card">
+            <h2>Team Registration Details</h2>
+            <div class="input-group full"><label>Team Name</label><input type="text" id="teamName" placeholder="Enter Team Name" required></div>
+        </div>
+
+        <div class="section-card">
+            <h2>1. Team Leader Details</h2>
+            <div class="grid">
+                <div class="input-group full"><label>Full Name</label><input type="text" id="leaderName" required></div>
+                <div class="input-group"><label>Email Address</label><input type="email" id="leaderEmail" required></div>
+                <div class="input-group"><label>Mobile (10-Digit)</label><input type="text" id="leaderPhone" pattern="\d{10}" required></div>
+                <div class="input-group full"><label>Registration Number</label><input type="text" id="leaderReg" required></div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2>2. Member 2 Details</h2>
+            <div class="grid">
+                <div class="input-group full"><label>Full Name</label><input type="text" id="m2Name" required></div>
+                <div class="input-group"><label>Email Address</label><input type="email" id="m2Email" required></div>
+                <div class="input-group"><label>Mobile Number</label><input type="text" id="m2Phone" required></div>
+                <div class="input-group full"><label>Registration Number</label><input type="text" id="m2Reg" required></div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2>3. Member 3 Details</h2>
+            <div class="grid">
+                <div class="input-group full"><label>Full Name</label><input type="text" id="m3Name" required></div>
+                <div class="input-group"><label>Email Address</label><input type="email" id="m3Email" required></div>
+                <div class="input-group"><label>Mobile Number</label><input type="text" id="m3Phone" required></div>
+                <div class="input-group full"><label>Registration Number</label><input type="text" id="m3Reg" required></div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2>4. Member 4 Details</h2>
+            <div class="grid">
+                <div class="input-group full"><label>Full Name</label><input type="text" id="m4Name" required></div>
+                <div class="input-group"><label>Email Address</label><input type="email" id="m4Email" required></div>
+                <div class="input-group"><label>Mobile Number</label><input type="text" id="m4Phone" required></div>
+                <div class="input-group full"><label>Registration Number</label><input type="text" id="m4Reg" required></div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2>Payment & Verification</h2>
+            <div class="qr-container">
+                <p style="color: var(--gold-vibrant); font-weight: 800; margin-bottom: 15px;">SCAN TO PAY</p>
+                <div class="qr-placeholder">
+                    <img src="QR.jpeg" alt="Payment QR" style="width: 100%;">
+                </div>
+                <p style="font-size: 0.7rem; color: #888;">Complete payment before providing Transmission ID.</p>
+            </div>
+            
+            <div class="input-group full">
+                <label>Transaction ID</label>
+                <input type="text" id="transactionId" placeholder="Enter ID from Payment" required>
+            </div>
+            <div class="input-group full">
+                <label>Payment Screenshot</label>
+                <div style="border: 1px dashed var(--gold-vibrant); padding: 15px; border-radius: 10px;">
+                    <input type="file" id="screenshotInput" accept="image/*" required>
+                </div>
+            </div>
+            <button type="submit" id="submitBtn" class="btn-gold">Confirm Registration</button>
+        </div>
+    </form>
+</div>
+
+<footer>
+    <h3 style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--gold-vibrant); letter-spacing: 5px;">MISSION CONTROL</h3>
+    <div class="contact-grid">
+        <div class="contact-card">
+            <h4 style="color: var(--gold-vibrant); margin-bottom: 10px;">Faculty Incharges</h4>
+            <p>Dr. M RAJASEKARAN +91 9952288958</p>
+            <p>Dr. N SUBBULAKSHMI +91 9843910092</p>
+        </div>
+        <div class="contact-card">
+            <h4 style="color: var(--gold-vibrant); margin-bottom: 10px;">Student Coordinators</h4>
+            <p>C VISHAL  +91 8590556670</p>
+            <p>N SABARI VASAN  +91 9345864424</p>
+            <p>K PRASANA RAJ  +91 9962005819</p>
+            <p>T AJAY VAIRAM +91 9043533985</p>
+        </div>
+    </div>
+    <div class="social-links">
+        <a href="https://www.instagram.com/kare_ieee_ras?igsh=aXVjd3IxNHg3NHds">Instagram</a>
+        <a href="https://www.linkedin.com/company/kare-ieee-robotics-automation-society/">LinkedIn</a>
+        <a href="mailto:kareieeeras@gmail.com">Official Mail</a>
+    </div>
+</footer>
+
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxPGS4N7jiZy_K9_QFi2TD4q8_oAn0ZgDf0eXS4OgAlcxyHZkNO31bZDoSfTjWhWOEp/exec';
+    const form = document.getElementById('hackathon-form');
+    const submitBtn = document.getElementById('submitBtn');
+    const modal = document.getElementById('success-modal');
+
+    function closeModal() {
+        modal.style.display = 'none';
+        form.reset();
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.innerText = "SYNCHRONIZING...";
+
+        const fileInput = document.getElementById('screenshotInput');
+        const file = fileInput.files[0];
+
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+
+        try {
+            const base64File = await toBase64(file);
+            const formData = {
+                teamName: document.getElementById('teamName').value,
+                transactionId: document.getElementById('transactionId').value,
+                imageFile: base64File,
+                leaderName: document.getElementById('leaderName').value,
+                leaderEmail: document.getElementById('leaderEmail').value,
+                leaderPhone: document.getElementById('leaderPhone').value,
+                leaderRegNo: document.getElementById('leaderReg').value,
+                m2Name: document.getElementById('m2Name').value,
+                m2Email: document.getElementById('m2Email').value,
+                m2Phone: document.getElementById('m2Phone').value,
+                m2RegNo: document.getElementById('m2Reg').value,
+                m3Name: document.getElementById('m3Name').value,
+                m3Email: document.getElementById('m3Email').value,
+                m3Phone: document.getElementById('m3Phone').value,
+                m3RegNo: document.getElementById('m3Reg').value,
+                m4Name: document.getElementById('m4Name').value,
+                m4Email: document.getElementById('m4Email').value,
+                m4Phone: document.getElementById('m4Phone').value,
+                m4RegNo: document.getElementById('m4Reg').value
+            };
+
+            await fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            // Show custom modal instead of alert
+            modal.style.display = 'flex';
+            
+        } catch (error) {
+            console.error(error);
+            alert("SYSTEM ERROR: Sync failed. Please check connection.");
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerText = "CONFIRM REGISTRATION";
+        }
+    });
+
+    // --- Interactive Golden Ember Engine ---
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, embers = [], mouseX = 0, mouseY = 0;
+
+    function init() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+        embers = [];
+        for(let i=0; i<300; i++) {
+            embers.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                size: Math.random() * 3 + 0.5,
+                speedY: Math.random() * 0.8 + 0.2,
+                opacity: Math.random() * 0.5 + 0.1
+            });
+        }
+    }
+
+    function draw() {
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, w, h);
+        let grd = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 500);
+        grd.addColorStop(0, 'rgba(255, 215, 0, 0.15)');
+        grd.addColorStop(1, 'transparent');
+        ctx.fillStyle = grd;
+        ctx.fillRect(0,0,w,h);
+        embers.forEach(e => {
+            ctx.fillStyle = `rgba(255, 215, 0, ${e.opacity})`;
+            ctx.shadowBlur = 12; ctx.shadowColor = 'gold';
+            ctx.beginPath();
+            let px = e.x + (mouseX - w/2) * 0.05;
+            let py = e.y + (mouseY - h/2) * 0.05;
+            ctx.arc(px, py, e.size, 0, Math.PI*2);
+            ctx.fill();
+            e.y -= e.speedY; 
+            if(e.y < -10) { e.y = h + 10; e.x = Math.random() * w; }
+        });
+        requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+    window.addEventListener('resize', init);
+    init(); draw();
+</script>
+</body>
+</html>
