@@ -31,7 +31,7 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            padding: 60px 15px;
+            padding: 40px 15px; /* Reduced top padding for mobile */
         }
 
         .section-card {
@@ -47,8 +47,28 @@
             animation: breathe 4s infinite alternate;
         }
 
+        /* --- MOBILE RESPONSIVENESS FIXES --- */
+        @media (max-width: 600px) {
+            .section-card {
+                padding: 25px 20px; /* Less padding on small screens */
+                margin-bottom: 25px;
+            }
+            .grid {
+                grid-template-columns: 1fr !important; /* Forces 1 column on mobile */
+                gap: 10px;
+            }
+            h1 {
+                letter-spacing: 4px !important; /* Reduces spacing so title doesn't break */
+            }
+            .btn-gold {
+                padding: 18px;
+                font-size: 1rem;
+                letter-spacing: 3px;
+            }
+        }
+
         .section-card:hover {
-            transform: scale(1.02) translateY(-10px);
+            transform: scale(1.01) translateY(-5px);
             box-shadow: 0 0 50px rgba(255, 215, 0, 0.4);
             border-color: var(--gold-vibrant);
         }
@@ -60,7 +80,7 @@
 
         h1 {
             font-family: 'Cinzel', serif;
-            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-size: clamp(2rem, 8vw, 4rem);
             background: linear-gradient(to bottom, #fff, var(--gold-vibrant));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -101,6 +121,7 @@
         input { 
             padding: 15px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255, 215, 0, 0.2); 
             border-radius: 10px; color: #fff; outline: none; transition: 0.3s;
+            width: 100%;
         }
         input:focus { border-color: var(--gold-vibrant); box-shadow: 0 0 15px var(--gold-vibrant); }
 
@@ -121,7 +142,6 @@
         .btn-gold:hover { letter-spacing: 8px; filter: brightness(1.2); }
         .btn-gold:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* --- THEMED SUCCESS MODAL --- */
         #success-modal {
             display: none;
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -158,16 +178,16 @@
 </div>
 
 <div class="page-wrapper">
-    <div style="text-align: center; margin-bottom: 70px;">
-        <img src="https://2025.ieee-icra.org/wp-content/uploads/2024/04/RAS-logo-white.png" style="width: 90px; filter: brightness(0) invert(1) drop-shadow(0 0 15px gold);">
+    <div style="text-align: center; margin-bottom: 50px;">
+        <img src="https://2025.ieee-icra.org/wp-content/uploads/2024/04/RAS-logo-white.png" style="width: 80px; filter: brightness(0) invert(1) drop-shadow(0 0 15px gold);">
         <h1>DetAIthoN 2k26</h1>
         <p style="color: var(--gold-vibrant); letter-spacing: 5px; font-weight: 800; margin-top: 15px;">IEEE RAS ELITE DIVISION</p>
     </div>
 
     <div class="section-card">
         <h2>The Mandate</h2>
-        <p style="color: #aaa; line-height: 1.8;">
-            This 24-hour hackathon is a platform for students to innovate, collaborate, and build impactful tech solutions. Participants will work in teams to solve real-world challenges using creativity and technical skills. The event promotes learning, mentorship, and teamwork. Projects will be evaluated based on innovation, feasibility, implementation, and impact. The hackathon aims to foster innovation and encourage technology-driven problem solving.
+        <p style="color: #aaa; line-height: 1.8; font-size: 0.9rem;">
+            This 24-hour hackathon is a platform for students to innovate, collaborate, and build impactful tech solutions. Participants will work in teams to solve real-world challenges using creativity and technical skills. 
         </p>
     </div>
 
@@ -244,7 +264,7 @@
 </div>
 
 <footer>
-    <h3 style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--gold-vibrant); letter-spacing: 5px;">MISSION CONTROL</h3>
+    <h3 style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--gold-vibrant); letter-spacing: 5px;">MISSION CONTROL</h3>
     <div class="contact-grid">
         <div class="contact-card">
             <h4 style="color: var(--gold-vibrant); margin-bottom: 10px;">Faculty Incharges</h4>
@@ -259,7 +279,7 @@
             <p>T AJAY VAIRAM +91 9043533985</p>
         </div>
     </div>
-    <div class="social-links">
+    <div class="social-links" style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px;">
         <a href="https://www.instagram.com/kare_ieee_ras?igsh=aXVjd3IxNHg3NHds">Instagram</a>
         <a href="https://www.linkedin.com/company/kare-ieee-robotics-automation-society/">LinkedIn</a>
         <a href="mailto:kareieeeras@gmail.com">Official Mail</a>
@@ -275,6 +295,7 @@
     function closeModal() {
         modal.style.display = 'none';
         form.reset();
+        window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
     form.addEventListener('submit', async (e) => {
@@ -323,7 +344,6 @@
                 body: JSON.stringify(formData)
             });
 
-            // Show custom modal
             modal.style.display = 'flex';
             
         } catch (error) {
@@ -335,7 +355,6 @@
         }
     });
 
-    // --- Interactive Golden Ember Engine ---
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let w, h, embers = [], mouseX = 0, mouseY = 0;
@@ -344,12 +363,12 @@
         w = canvas.width = window.innerWidth;
         h = canvas.height = window.innerHeight;
         embers = [];
-        for(let i=0; i<300; i++) {
+        for(let i=0; i<150; i++) { // Fewer embers for better mobile performance
             embers.push({
                 x: Math.random() * w,
                 y: Math.random() * h,
-                size: Math.random() * 3 + 0.5,
-                speedY: Math.random() * 0.8 + 0.2,
+                size: Math.random() * 2 + 0.5,
+                speedY: Math.random() * 0.5 + 0.1,
                 opacity: Math.random() * 0.5 + 0.1
             });
         }
@@ -358,18 +377,10 @@
     function draw() {
         ctx.fillStyle = '#000';
         ctx.fillRect(0, 0, w, h);
-        let grd = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 500);
-        grd.addColorStop(0, 'rgba(255, 215, 0, 0.15)');
-        grd.addColorStop(1, 'transparent');
-        ctx.fillStyle = grd;
-        ctx.fillRect(0,0,w,h);
         embers.forEach(e => {
             ctx.fillStyle = `rgba(255, 215, 0, ${e.opacity})`;
-            ctx.shadowBlur = 12; ctx.shadowColor = 'gold';
             ctx.beginPath();
-            let px = e.x + (mouseX - w/2) * 0.05;
-            let py = e.y + (mouseY - h/2) * 0.05;
-            ctx.arc(px, py, e.size, 0, Math.PI*2);
+            ctx.arc(e.x, e.y, e.size, 0, Math.PI*2);
             ctx.fill();
             e.y -= e.speedY; 
             if(e.y < -10) { e.y = h + 10; e.x = Math.random() * w; }
@@ -377,7 +388,6 @@
         requestAnimationFrame(draw);
     }
 
-    window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
     window.addEventListener('resize', init);
     init(); draw();
 </script>
