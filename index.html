@@ -31,7 +31,7 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            padding: 40px 15px; /* Reduced top padding for mobile */
+            padding: 40px 15px;
         }
 
         .section-card {
@@ -47,23 +47,29 @@
             animation: breathe 4s infinite alternate;
         }
 
-        /* --- MOBILE RESPONSIVENESS FIXES --- */
+        /* --- STRENGTHENED MOBILE RESPONSIVENESS --- */
         @media (max-width: 600px) {
             .section-card {
-                padding: 25px 20px; /* Less padding on small screens */
+                padding: 25px 15px;
                 margin-bottom: 25px;
             }
             .grid {
-                grid-template-columns: 1fr !important; /* Forces 1 column on mobile */
-                gap: 10px;
+                display: block !important; /* Disables grid to force natural stacking */
+            }
+            .input-group {
+                width: 100% !important;
+                margin-bottom: 15px;
+            }
+            .input-group.full {
+                grid-column: auto; /* Resets grid spanning */
             }
             h1 {
-                letter-spacing: 4px !important; /* Reduces spacing so title doesn't break */
+                letter-spacing: 3px !important;
+                font-size: 2.2rem !important;
             }
-            .btn-gold {
-                padding: 18px;
+            h2 {
                 font-size: 1rem;
-                letter-spacing: 3px;
+                margin-bottom: 20px;
             }
         }
 
@@ -105,7 +111,7 @@
         }
 
         .qr-placeholder {
-            width: 180px; height: 180px;
+            width: 160px; height: 160px;
             background: #fff; 
             margin: 0 auto 15px;
             padding: 10px;
@@ -116,12 +122,13 @@
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .full { grid-column: span 2; }
         .input-group { display: flex; flex-direction: column; margin-bottom: 20px; }
-        label { font-size: 0.75rem; font-weight: 800; color: #888; margin-bottom: 8px; text-transform: uppercase; }
+        label { font-size: 0.7rem; font-weight: 800; color: #888; margin-bottom: 8px; text-transform: uppercase; }
         
         input { 
             padding: 15px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255, 215, 0, 0.2); 
             border-radius: 10px; color: #fff; outline: none; transition: 0.3s;
             width: 100%;
+            font-size: 16px; /* Prevents auto-zoom on iOS */
         }
         input:focus { border-color: var(--gold-vibrant); box-shadow: 0 0 15px var(--gold-vibrant); }
 
@@ -131,15 +138,15 @@
         }
 
         .btn-gold {
-            width: 100%; padding: 22px; 
+            width: 100%; padding: 20px; 
             background: linear-gradient(45deg, var(--gold-deep), var(--gold-vibrant));
             color: #000; border: none; border-radius: 50px; 
             font-weight: 800; font-family: 'Cinzel', serif;
-            font-size: 1.2rem; cursor: pointer; text-transform: uppercase;
-            letter-spacing: 5px; transition: 0.4s; margin-top: 20px;
+            font-size: 1.1rem; cursor: pointer; text-transform: uppercase;
+            letter-spacing: 4px; transition: 0.4s; margin-top: 10px;
             box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
         }
-        .btn-gold:hover { letter-spacing: 8px; filter: brightness(1.2); }
+        .btn-gold:hover { letter-spacing: 6px; filter: brightness(1.2); }
         .btn-gold:disabled { opacity: 0.5; cursor: not-allowed; }
 
         #success-modal {
@@ -156,13 +163,15 @@
             box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
             backdrop-filter: blur(20px);
         }
-        .modal-content h3 { font-family: 'Cinzel', serif; color: var(--gold-vibrant); font-size: 1.8rem; margin-bottom: 15px; }
-        .modal-content p { color: #fff; margin-bottom: 25px; line-height: 1.6; }
+        .modal-content h3 { font-family: 'Cinzel', serif; color: var(--gold-vibrant); font-size: 1.6rem; margin-bottom: 15px; }
+        .modal-content p { color: #fff; margin-bottom: 25px; line-height: 1.6; font-size: 0.9rem; }
 
-        footer { margin-top: 80px; padding: 80px 20px; background: rgba(0,0,0,0.95); border-top: 2px solid var(--gold-vibrant); text-align: center; }
-        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; max-width: 900px; margin: 40px auto; }
-        .social-links a { color: var(--gold-vibrant); text-decoration: none; border: 1px solid var(--gold-vibrant); padding: 12px 30px; border-radius: 30px; transition: 0.3s; font-size: 0.8rem; font-weight: 800; }
-        .social-links a:hover { background: var(--gold-vibrant); color: #000; box-shadow: 0 0 20px var(--gold-vibrant); }
+        footer { margin-top: 60px; padding: 60px 20px; background: rgba(0,0,0,0.95); border-top: 2px solid var(--gold-vibrant); text-align: center; }
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 900px; margin: 30px auto; }
+        .contact-card p { font-size: 0.85rem; margin-bottom: 5px; color: #ccc; }
+        .social-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
+        .social-links a { color: var(--gold-vibrant); text-decoration: none; border: 1px solid var(--gold-vibrant); padding: 10px 20px; border-radius: 30px; transition: 0.3s; font-size: 0.75rem; font-weight: 800; }
+        .social-links a:hover { background: var(--gold-vibrant); color: #000; }
     </style>
 </head>
 <body>
@@ -172,7 +181,7 @@
 <div id="success-modal">
     <div class="modal-content">
         <h3>MISSION SUCCESSFUL</h3>
-        <p>Welcome aboard! Prepare to code, collaborate, and challenge yourself.</p>
+        <p>Welcome aboard! Prepare to code, collaborate, and challenge yourself at DetAIthoN 2k26.</p>
         <button onclick="closeModal()" class="btn-gold" style="padding: 12px 30px; font-size: 1rem;">ACKNOWLEDGE</button>
     </div>
 </div>
@@ -186,7 +195,7 @@
 
     <div class="section-card">
         <h2>The Mandate</h2>
-        <p style="color: #aaa; line-height: 1.8; font-size: 0.9rem;">
+        <p style="color: #aaa; line-height: 1.8; font-size: 0.85rem;">
             This 24-hour hackathon is a platform for students to innovate, collaborate, and build impactful tech solutions. Participants will work in teams to solve real-world challenges using creativity and technical skills. 
         </p>
     </div>
@@ -241,11 +250,11 @@
         <div class="section-card">
             <h2>Payment & Verification</h2>
             <div class="qr-container">
-                <p style="color: var(--gold-vibrant); font-weight: 800; margin-bottom: 15px;">SCAN TO PAY</p>
+                <p style="color: var(--gold-vibrant); font-weight: 800; margin-bottom: 10px; font-size: 0.8rem;">SCAN TO PAY</p>
                 <div class="qr-placeholder">
                     <img src="QR.jpeg" alt="Payment QR" style="width: 100%;">
                 </div>
-                <p style="font-size: 0.7rem; color: #888;">Complete payment before providing Transmission ID.</p>
+                <p style="font-size: 0.65rem; color: #888;">Complete payment before providing Transmission ID.</p>
             </div>
             
             <div class="input-group full">
@@ -264,22 +273,22 @@
 </div>
 
 <footer>
-    <h3 style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--gold-vibrant); letter-spacing: 5px;">MISSION CONTROL</h3>
+    <h3 style="font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--gold-vibrant); letter-spacing: 5px; margin-bottom: 20px;">MISSION CONTROL</h3>
     <div class="contact-grid">
         <div class="contact-card">
-            <h4 style="color: var(--gold-vibrant); margin-bottom: 10px;">Faculty Incharges</h4>
+            <h4 style="color: var(--gold-vibrant); margin-bottom: 10px; font-size: 0.9rem;">Faculty Incharges</h4>
             <p>Dr. M RAJASEKARAN +91 9952288958</p>
             <p>Dr. N SUBBULAKSHMI +91 9843910092</p>
         </div>
         <div class="contact-card">
-            <h4 style="color: var(--gold-vibrant); margin-bottom: 10px;">Student Coordinators</h4>
+            <h4 style="color: var(--gold-vibrant); margin-bottom: 10px; font-size: 0.9rem;">Student Coordinators</h4>
             <p>C VISHAL  +91 8590556670</p>
             <p>N SABARI VASAN  +91 9345864424</p>
             <p>K PRASANA RAJ  +91 9962005819</p>
             <p>T AJAY VAIRAM +91 9043533985</p>
         </div>
     </div>
-    <div class="social-links" style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px;">
+    <div class="social-links">
         <a href="https://www.instagram.com/kare_ieee_ras?igsh=aXVjd3IxNHg3NHds">Instagram</a>
         <a href="https://www.linkedin.com/company/kare-ieee-robotics-automation-society/">LinkedIn</a>
         <a href="mailto:kareieeeras@gmail.com">Official Mail</a>
@@ -357,13 +366,13 @@
 
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
-    let w, h, embers = [], mouseX = 0, mouseY = 0;
+    let w, h, embers = [];
 
     function init() {
         w = canvas.width = window.innerWidth;
         h = canvas.height = window.innerHeight;
         embers = [];
-        for(let i=0; i<150; i++) { // Fewer embers for better mobile performance
+        for(let i=0; i<150; i++) { 
             embers.push({
                 x: Math.random() * w,
                 y: Math.random() * h,
